@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XCPC 榜单回放</title>
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- 顶部信息栏 -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">▶</span>
+      <div class="brand-text">
+        <h1 id="contest-title">XCPC 实时榜单回放</h1>
+        <span id="contest-sub" class="sub">加载中…</span>
+      </div>
+    </div>
+    <div class="top-right">
+      <span id="validate-badge" class="badge hidden">结果校验通过</span>
+      <label class="field">
+        <span class="field-label">数据文件</span>
+        <select id="file-select"></select>
+      </label>
+      <label class="field">
+        <span class="field-label">榜单</span>
+        <select id="board-filter" title="正榜仅显示正式队伍（排除非正式 / 打星队伍）">
+          <option value="all">总榜（全部队伍）</option>
+          <option value="official">正榜（正式队伍）</option>
+        </select>
+      </label>
+      <label class="toggle" title="封榜开始后，封榜内的提交以『待判』状态呈现，不影响排名">
+        <input type="checkbox" id="freeze-toggle">
+        <span class="toggle-knob"></span>
+        <span class="toggle-text" id="freeze-text">封榜</span>
+      </label>
+    </div>
+  </header>
+
+  <!-- 计时与进度条 -->
+  <section class="clockbar">
+    <div class="clock-main">
+      <div class="clock-block">
+        <span class="clock-label">比赛时间</span>
+        <span id="clock-elapsed" class="clock-value">00:00:00</span>
+      </div>
+      <div class="clock-block clock-wall-block">
+        <span class="clock-label">实际时间</span>
+        <span id="clock-wall" class="clock-value clock-wall">—</span>
+      </div>
+      <div class="clock-block">
+        <span class="clock-label">进度</span>
+        <span id="clock-progress" class="clock-value clock-progress">0.0%</span>
+      </div>
+    </div>
+    <div class="timeline-wrap">
+      <canvas id="activity-chart" class="activity-chart"></canvas>
+      <input type="range" id="timeline" class="timeline" min="0" max="1000" value="0" step="1" aria-label="回放进度">
+    </div>
+    <div class="clock-stats">
+      <div class="stat-block">
+        <span class="stat-key">事件</span>
+        <span id="stat-event" class="stat-val">0 / 0</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-key">过题</span>
+        <span id="stat-ac" class="stat-val">0</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-key">榜首</span>
+        <span id="stat-leader" class="stat-val stat-leader">—</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主区域：榜单 + 事件流 -->
+  <main class="layout">
+    <div class="board-wrap">
+      <div class="board-scroll">
+        <table class="board" id="board">
+          <thead id="board-head">
+            <tr id="board-head-row">
+              <th class="col-rank">#</th>
+              <th class="col-team">队伍</th>
+              <th class="col-solved">过题</th>
+              <th class="col-penalty">罚时</th>
+            </tr>
+          </thead>
+          <tbody id="board-body"></tbody>
+        </table>
+      </div>
+      <div class="board-foot">
+        <span id="board-empty" class="board-empty">未加载数据</span>
+        <span id="board-stat" class="board-stat"></span>
+      </div>
+    </div>
+
+    <aside class="feed-panel" id="feed-panel">
+      <div class="feed-header">
+        <span class="feed-title"><i class="dot"></i>实时动态</span>
+        <button id="feed-collapse" class="feed-collapse" title="收起动态栏">»</button>
+      </div>
+      <ul id="feed-list" class="feed-list"></ul>
+      <div class="feed-empty" id="feed-empty">点击播放，提交动态将在此滚动</div>
+    </aside>
+  </main>
+
+  <!-- 时间轴控制条 -->
+  <footer class="controlbar">
+    <div class="ctrl-group ctrl-nav">
+      <button id="btn-start" class="ctrl-btn" title="跳到比赛开始">⏮</button>
+      <button id="btn-prev" class="ctrl-btn" title="上一条提交（←）">◀</button>
+      <button id="btn-play" class="ctrl-btn ctrl-play" title="播放 / 暂停（空格）">▶</button>
+      <button id="btn-next" class="ctrl-btn" title="下一条提交（→）">▶|</button>
+      <button id="btn-end" class="ctrl-btn" title="跳到比赛结束">⏭</button>
+    </div>
+    <div class="ctrl-group ctrl-speed" id="speed-group">
+      <span class="ctrl-label">倍速</span>
+    </div>
+    <div class="ctrl-group ctrl-hint">
+      <span>空格 播放/暂停 · ←/→ 上/下一条 · ↑/↓ 倍速</span>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

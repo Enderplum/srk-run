@@ -1,0 +1,32 @@
+# =====================================================
+# XCPC 榜单回放 — Git 忽略规则
+# =====================================================
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+*.egg
+
+# ---- 运行 / 日志产物 ----
+*.log
+nohup.out
+*.pid
+
+# ---- 比赛数据文件（体积大，不入库）----
+*.srk.json
+srk/
+
+# ---- IDE / 编辑器 ----
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ---- 操作系统 ----
+.DS_Store
+Thumbs.db
+desktop.ini
